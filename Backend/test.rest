@@ -1,0 +1,7 @@
+POST http://localhost:5000/get-snap-token
+Content-Type: application/json
+
+{
+    "orderId": "order-124",
+    "grossAmount": 10000
+}
