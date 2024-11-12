@@ -25,7 +25,7 @@ const Payment = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/get-snap-token', {
+            const response = await axios.post('http://localhost:3000/get-snap-token', {
                 orderId,
                 grossAmount: selectedProduct.price,
             });

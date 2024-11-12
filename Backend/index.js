@@ -1,43 +1,24 @@
-// backend/server.js
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const axios = require('axios');
-require('dotenv').config();
+import express from 'express';
+import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import transactionRoutes from './routes/transactionRoutes.js';
+
+dotenv.config();
 
 const app = express();
-const PORT = 5000;
+const port = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173'  
+}));
+
+
 app.use(bodyParser.json());
 
-// Endpoint untuk mendapatkan token Snap
-app.post('/get-snap-token', async (req, res) => {
-    const { orderId, grossAmount } = req.body;
 
-    const parameter = {
-        "payment_type": "credit_card",
-        "transaction_details": {
-            "order_id": orderId,
-            "gross_amount": grossAmount
-        }
-    };
+app.use('/api', transactionRoutes);
 
-    try {
-        const response = await axios.post('https://app.sandbox.midtrans.com/snap/v1/transactions', parameter, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Basic ${Buffer.from(process.env.MIDTRANS_SERVER_KEY).toString('base64')}`
-            }
-        });
-
-        res.json({ token: response.data.token });
-    } catch (error) {
-        console.error('Error creating Snap token:', error.response.data);
-        res.status(500).json({ error: 'Failed to create Snap token' });
-    }
-});
-
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });

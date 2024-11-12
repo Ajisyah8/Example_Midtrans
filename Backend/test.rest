@@ -1,7 +1,3 @@
-POST http://localhost:5000/get-snap-token
+GET  http://localhost:3000/api/transactions
 Content-Type: application/json
 
-{
-    "orderId": "order-124",
-    "grossAmount": 10000
-}
